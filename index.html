@@ -1,1 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机美图 - 看图神器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    :root {
+      --primary: #4a9eff;
+      --secondary: #a8d0ff;
+      --accent: #6bb6ff;
+      --dark: #e8f1fa;
+      --darker: #f0f6fc;
+      --glass: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.5);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--darker);
+      color: #1a3a5c;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background: url('bg.jpg') center center / cover no-repeat;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(74, 158, 255, 0.015) 2px,
+        rgba(74, 158, 255, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+      animation: scanlineMove 8s linear infinite;
+    }
+
+    @keyframes scanlineMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100vh; }
+
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      -webkit-text-fill-color: #1a3a5c;
+      background: none;
+      font-weight: 300;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(26, 58, 92, 0.6);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      font-size: 12px;
+      color: #2a6fc7;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px rgba(74, 158, 255, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 80px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 3vw, 22px);
+      color: rgba(26, 58, 92, 0.6);
+      max-width: 600px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeInUp 1s ease 0.6s both;
+    }
+
+    .btn {
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(74, 158, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: var(--glass);
+      color: #1a3a5c;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(74, 158, 255, 0.1);
+      transform: translateY(-3px);
+    }
+    .showcase {
+      position: relative;
+      z-index: 1;
+      padding: 80px 20px;
+      display: flex;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .phone-mockup {
+      width: 280px;
+      height: 560px;
+      background: linear-gradient(145deg, #e8f1fa, #d0e3f7);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow:
+        0 0 60px rgba(74, 158, 255, 0.15),
+        0 0 120px rgba(107, 182, 255, 0.1),
+        inset 0 0 30px rgba(74, 158, 255, 0.05);
+      border: 1px solid rgba(74, 158, 255, 0.1);
+      transform: rotateY(-15deg) rotateX(5deg);
+      animation: float 6s ease-in-out infinite, fadeInUp 1s ease 0.8s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-mockup::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, var(--primary), transparent 30%);
+      animation: rotate 4s linear infinite;
+      opacity: 0.1;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #f0f6fc;
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-header {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(74, 158, 255, 0.05);
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .phone-image-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-image-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+    .phone-image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      background: linear-gradient(transparent, rgba(26, 58, 92, 0.8));
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .phone-controls {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phone-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .phone-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      background: rgba(74, 158, 255, 0.1);
+      border: 1px solid rgba(74, 158, 255, 0.2);
+      color: #2a6fc7;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: rotateY(-15deg) rotateX(5deg) translateY(0); }
+      50% { transform: rotateY(-15deg) rotateX(5deg) translateY(-20px); }
+    }
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: rgba(26, 58, 92, 0.5);
+      font-size: 18px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .feature-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 35px;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(74, 158, 255, 0.2);
+      box-shadow: 0 20px 60px rgba(74, 158, 255, 0.1);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(107, 182, 255, 0.1));
+      border: 1px solid rgba(74, 158, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #1a3a5c;
+    }
+
+    .feature-card p {
+      color: rgba(26, 58, 92, 0.5);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .stats {
+      position: relative;
+      z-index: 1;
+      padding: 80px 20px;
+      background: linear-gradient(180deg, transparent, rgba(74, 158, 255, 0.05), transparent);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-item p {
+      color: rgba(26, 58, 92, 0.5);
+      margin-top: 10px;
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+      text-align: center;
+      border-top: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    footer .logo {
+      font-size: 28px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    footer p {
+      color: rgba(26, 58, 92, 0.4);
+      font-size: 14px;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 15px 20px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .phone-mockup {
+        width: 240px;
+        height: 480px;
+        transform: rotateY(-5deg) rotateX(5deg);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--primary), var(--accent));
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="scanline"></div>
+
+  <nav>
+    <div class="logo">随机<span>美图</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">功能特性</a></li>
+      <li><a href="#showcase">界面预览</a></li>
+    </ul>
+  </nav>
+  <section class="hero">
+    <div class="hero-badge">AndLua 随机看图神器</div>
+    <h1>
+      <span class="gradient-text">随机美图</span><br>
+      随机生成器
+    </h1>
+    <p class="hero-subtitle">
+      基于 AndLua+ 开发的高性能随机看图应用<br>
+      从服务端实时获取图片，支持随机浏览、顺序切换、本地保存 作者:炼狱魅魔q群877825295
+    </p>
+    <div class="hero-buttons">
+      <a href="https://1819739529.share.123pan.cn/123pan/NwGEjv-ipMed" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        立即下载
+      </a>
+      <a href="#features" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        了解更多
+      </a>
+    </div>
+  </section>
+
+  <section class="showcase" id="showcase">
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="phone-header">随机看图</div>
+        <div class="phone-image-area">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8f1fa,#d0e3f7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+            <div style="width:60px;height:60px;border-radius:50%;border:3px solid var(--primary);border-top-color:transparent;animation:spin 1s linear infinite;"></div>
+            <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+            <span style="color:#2a6fc7;font-size:12px;">正在加载...</span>
+          </div>
+          <div class="phone-image-overlay">共获取到 1 张图片</div>
+        </div>
+        <div class="phone-controls">
+          <div class="phone-btn-row">
+            <div class="phone-btn">上一张</div>
+            <div class="phone-btn" style="background:rgba(74,158,255,0.15);border-color:rgba(74,158,255,0.3);color:#2a6fc7;">随机</div>
+            <div class="phone-btn">下一张</div>
+          </div>
+          <div class="phone-btn-row">
+            <div class="phone-btn">刷新列表</div>
+            <div class="phone-btn">保存图片</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="features" id="features">
+    <div class="section-title reveal">
+      <h2>核心<span class="gradient-text">功能</span></h2>
+      <p>专为看图体验打造，简洁高效</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x1F4F7;</div>
+        <h3>服务端获取</h3>
+        <p>通过 HTTP 请求从服务器实时拉取图片列表，JSON 数据解析，支持动态更新图库内容</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x1F3B2;</div>
+        <h3>随机浏览</h3>
+        <p>一键随机切换图片，每次都有新惊喜。支持上一张/下一张顺序浏览，循环播放</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x1F4BE;</div>
+        <h3>本地保存</h3>
+        <p>喜欢的图片一键保存到手机相册，自动创建"随机看图"文件夹，方便管理</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x26A1;</div>
+        <h3>双击切换</h3>
+        <p>支持双击图片区域快速切换下一张，操作流畅，体验丝滑</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x1F504;</div>
+        <h3>实时刷新</h3>
+        <p>随时刷新获取最新图片列表，服务器新增图片立即同步到客户端</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#x1F4F1;</div>
+        <h3>AndLua 原生</h3>
+        <p>基于 AndLua+ 框架开发，纯原生 Android 体验，轻量快速，兼容性强</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid reveal">
+      <div class="stat-item">
+        <h3 id="stat1">0</h3>
+        <p>毫秒响应</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="stat2">0</h3>
+        <p>支持格式</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="stat3">0</h3>
+        <p>操作方式</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="stat4">0</h3>
+        <p>代码行数</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">随机<span>美图</span></div>
+    <p>基于 AndLua+ 开发 | 开源免费 | 2026</p>
+  </footer>
+  <script>
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 240, 255,' : 'rgba(112, 0, 255,';
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        if (this.y < 0) this.y = canvas.height;
+
+        if (mouse.x != null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            this.x -= dx * 0.01;
+            this.y -= dy * 0.01;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color + this.opacity + ')';
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(150, (canvas.width * canvas.height) / 8000);
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+    initParticles();
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.1 * (1 - distance / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => revealObserver.observe(el));
+    function animateNumber(id, target, suffix = '') {
+      const el = document.getElementById(id);
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = Math.floor(current) + suffix;
+      }, 20);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateNumber('stat1', 200, '+');
+          animateNumber('stat2', 6, '+');
+          animateNumber('stat3', 4, '+');
+          animateNumber('stat4', 300, '+');
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statsObserver.observe(document.querySelector('.stats'));
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.padding = '12px 40px';
+        nav.style.background = 'rgba(255, 255, 255, 0.95)';
+      } else {
+        nav.style.padding = '20px 40px';
+        nav.style.background = 'rgba(255, 255, 255, 0.7)';
+      }
+    });
+  </script>
+</body>
+</html>
