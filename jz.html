@@ -27,6 +27,40 @@
             align-items: center;
             gap: 20px;
         }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            border-radius: 12px;
+            background: #e0e0e0;
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #333;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .tab-content {
+            display: none;
+            width: 100%;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
         .img-card {
             background: #fff;
             border-radius: 16px;
@@ -62,20 +96,106 @@
             color: #666;
             margin-top: 8px;
         }
+        .link-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            width: 100%;
+            text-align: center;
+        }
+        .link-card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 16px;
+        }
+        .link-card p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 16px;
+        }
+        .link-card a {
+            display: inline-block;
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        .link-card a:hover {
+            background: #555;
+        }
+        .link-text {
+            display: block;
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+            word-break: break-all;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="img-card">
-            <img src="jz1.jpg" alt="京东E卡10元">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">1</button>
+            <button class="tab-btn" onclick="switchTab(1)">2</button>
+            <button class="tab-btn" onclick="switchTab(2)">3</button>
         </div>
-        <div class="img-card">
-            <img src="jz2.jpg" alt="邀请好友得积分">
+
+        <!-- 界面 1 -->
+        <div class="tab-content active">
+            <div class="img-card">
+                <img src="jz1.jpg" alt="京东E卡10元">
+            </div>
+            <div class="img-card">
+                <img src="jz2.jpg" alt="邀请好友得积分">
+            </div>
+            <div class="text-section">
+                <p>如果你是元宝新用户，你就可以给我免费捐赠1.5块用元宝参与助力，助我赢积分！</p>
+                <span class="code">用元宝参̂与̈助力，助̈好⁢友̂赢́积‌分！ UA2829 Vfu0:/5XRUFZ5L979R</span>
+            </div>
         </div>
-        <div class="text-section">
-            <p>如果你是元宝新用户，你就可以给我免费捐赠1.5块用元宝参与助力，助我赢积分！</p>
-            <span class="code">用元宝参̂与̈助力，助̈好⁢友̂赢́积‌分！ UA2829 Vfu0:/5XRUFZ5L979R</span>
+
+        <!-- 界面 2 -->
+        <div class="tab-content">
+            <div class="img-card">
+                <img src="jz3.jpg" alt="捐赠图片1">
+            </div>
+            <div class="img-card">
+                <img src="jz4.jpg" alt="捐赠图片2">
+            </div>
+            <div class="link-card">
+                <h2>打开链接用你的邮箱注册</h2>
+                <p>我可以获取积分续费服务器，感谢你的支持！</p>
+                <a href="https://hs.xzcloud.vip/login.php?mode=register&invite=INV955F17" target="_blank">点击前往注册</a>
+                <span class="link-text">https://hs.xzcloud.vip/login.php?mode=register&invite=INV955F17</span>
+            </div>
+        </div>
+
+        <!-- 界面 3 -->
+        <div class="tab-content">
+            <div class="text-section">
+                <p>第三个界面内容，你可以在这里添加更多捐赠方式或说明。</p>
+            </div>
         </div>
     </div>
+
+    <script>
+        function switchTab(index) {
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+    </script>
 </body>
 </html>
