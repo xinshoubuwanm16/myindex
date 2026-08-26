@@ -1,883 +1,946 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>随机美图 - 看图神器</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #4a9eff;
-      --secondary: #a8d0ff;
-      --accent: #6bb6ff;
-      --dark: #e8f1fa;
-      --darker: #f0f6fc;
-      --glass: rgba(255, 255, 255, 0.45);
-      --glass-border: rgba(255, 255, 255, 0.5);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-      background: var(--darker);
-      color: #1a3a5c;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    #particles-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      background: url('bg.jpg') center center / cover no-repeat;
-    }
-
-    .scanline {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(74, 158, 255, 0.015) 2px,
-        rgba(74, 158, 255, 0.015) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-      animation: scanlineMove 8s linear infinite;
-    }
-
-    @keyframes scanlineMove {
-      0% { background-position: 0 0; }
-      100% { background-position: 0 100vh; }
-
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-      transition: all 0.3s ease;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .logo span {
-      -webkit-text-fill-color: #1a3a5c;
-      background: none;
-      font-weight: 300;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: rgba(26, 58, 92, 0.6);
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-      position: relative;
-    }
-
-    .nav-links a:hover {
-      color: var(--primary);
-      text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      transition: width 0.3s;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-    
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 120px 20px 60px;
-      z-index: 1;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 20px;
-      border-radius: 50px;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      font-size: 12px;
-      color: #2a6fc7;
-      letter-spacing: 2px;
-      margin-bottom: 30px;
-      animation: fadeInUp 1s ease;
-    }
-
-    .hero-badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--primary);
-      box-shadow: 0 0 10px rgba(74, 158, 255, 0.5);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .hero h1 {
-      font-size: clamp(40px, 8vw, 80px);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      animation: fadeInUp 1s ease 0.2s both;
-    }
-
-    .hero h1 .gradient-text {
-      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 200% 200%;
-      animation: gradientShift 3s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .hero-subtitle {
-      font-size: clamp(16px, 3vw, 22px);
-      color: rgba(26, 58, 92, 0.6);
-      max-width: 600px;
-      margin-bottom: 40px;
-      line-height: 1.8;
-      animation: fadeInUp 1s ease 0.4s both;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeInUp 1s ease 0.6s both;
-    }
-
-    .btn {
-      padding: 16px 40px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: 1px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border: none;
-      box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 40px rgba(74, 158, 255, 0.5);
-    }
-
-    .btn-secondary {
-      background: var(--glass);
-      color: #1a3a5c;
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(74, 158, 255, 0.1);
-      transform: translateY(-3px);
-    }
-        .btn-donate {
-      background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-      color: #fff;
-      border: none;
-      box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
-    }
-
-    .btn-donate:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
-    }
-
-    .btn-source {
-      background: linear-gradient(135deg, #4ade80, #22c55e);
-      color: #fff;
-      border: none;
-      box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
-    }
-
-    .btn-source:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 40px rgba(74, 222, 128, 0.5);
-    }
-
-    .showcase {
-      position: relative;
-      z-index: 1;
-      padding: 80px 20px;
-      display: flex;
-      justify-content: center;
-      perspective: 1000px;
-    }
-
-    .phone-mockup {
-      width: 280px;
-      height: 560px;
-      background: linear-gradient(145deg, #e8f1fa, #d0e3f7);
-      border-radius: 40px;
-      padding: 12px;
-      box-shadow:
-        0 0 60px rgba(74, 158, 255, 0.15),
-        0 0 120px rgba(107, 182, 255, 0.1),
-        inset 0 0 30px rgba(74, 158, 255, 0.05);
-      border: 1px solid rgba(74, 158, 255, 0.1);
-      transform: rotateY(-15deg) rotateX(5deg);
-      animation: float 6s ease-in-out infinite, fadeInUp 1s ease 0.8s both;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .phone-mockup::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, transparent, var(--primary), transparent 30%);
-      animation: rotate 4s linear infinite;
-      opacity: 0.1;
-    }
-
-    @keyframes rotate {
-      100% { transform: rotate(360deg); }
-    }
-
-    .phone-screen {
-      width: 100%;
-      height: 100%;
-      background: #f0f6fc;
-      border-radius: 32px;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .phone-header {
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(74, 158, 255, 0.05);
-      border-bottom: 1px solid var(--glass-border);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .phone-image-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .phone-image-area img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.8;
-    }
-
-    .phone-image-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 15px;
-      background: linear-gradient(transparent, rgba(26, 58, 92, 0.8));
-      font-size: 11px;
-      color: rgba(255,255,255,0.9);
-    }
-
-    .phone-controls {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .phone-btn-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .phone-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      background: rgba(74, 158, 255, 0.1);
-      border: 1px solid rgba(74, 158, 255, 0.2);
-      color: #2a6fc7;
-      font-size: 11px;
-      text-align: center;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: rotateY(-15deg) rotateX(5deg) translateY(0); }
-      50% { transform: rotateY(-15deg) rotateX(5deg) translateY(-20px); }
-    }
-    .features {
-      position: relative;
-      z-index: 1;
-      padding: 100px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-title h2 {
-      font-size: clamp(28px, 5vw, 48px);
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-
-    .section-title p {
-      color: rgba(26, 58, 92, 0.5);
-      font-size: 18px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
-
-    .feature-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 35px;
-      transition: all 0.4s;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-    }
-
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s;
-    }
-
-    .feature-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .feature-card:hover {
-      transform: translateY(-10px);
-      border-color: rgba(74, 158, 255, 0.2);
-      box-shadow: 0 20px 60px rgba(74, 158, 255, 0.1);
-    }
-
-    .feature-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(107, 182, 255, 0.1));
-      border: 1px solid rgba(74, 158, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: #1a3a5c;
-    }
-
-    .feature-card p {
-      color: rgba(26, 58, 92, 0.5);
-      line-height: 1.7;
-      font-size: 14px;
-    }
-    .stats {
-      position: relative;
-      z-index: 1;
-      padding: 80px 20px;
-      background: linear-gradient(180deg, transparent, rgba(74, 158, 255, 0.05), transparent);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .stat-item h3 {
-      font-size: 48px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-item p {
-      color: rgba(26, 58, 92, 0.5);
-      margin-top: 10px;
-      font-size: 14px;
-      letter-spacing: 2px;
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-      padding: 60px 20px;
-      text-align: center;
-      border-top: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    footer .logo {
-      font-size: 28px;
-      margin-bottom: 20px;
-      display: inline-block;
-    }
-
-    footer p {
-      color: rgba(26, 58, 92, 0.4);
-      font-size: 14px;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s ease;
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        padding: 15px 20px;
-      }
-      .nav-links {
-        display: none;
-      }
-      .phone-mockup {
-        width: 240px;
-        height: 480px;
-        transform: rotateY(-5deg) rotateX(5deg);
-      }
-    }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--darker);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(var(--primary), var(--accent));
-      border-radius: 4px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>随机美图 · 轻量看图神器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #dce8f8;
+            min-height: 100vh;
+            padding: 1.2rem;
+            color: #1a2a4a;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: -2;
+            animation: floatGlow 20s ease-in-out infinite alternate;
+        }
+        body::before {
+            width: 60vw;
+            height: 60vw;
+            top: -10%;
+            left: -10%;
+            background: radial-gradient(circle, #4a8af4, #b6d4ff);
+            animation-duration: 25s;
+        }
+        body::after {
+            width: 50vw;
+            height: 50vw;
+            bottom: -10%;
+            right: -10%;
+            background: radial-gradient(circle, #6aaaff, #d0e4ff);
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.1); }
+            66% { transform: translate(-20px, 30px) scale(0.9); }
+            100% { transform: translate(10px, -10px) scale(1.05); }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 48px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 30px 80px rgba(30, 60, 120, 0.08), 0 10px 30px rgba(30, 60, 120, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50px;
+            background: conic-gradient(from 0deg, transparent, rgba(74, 138, 244, 0.3), transparent, rgba(74, 138, 244, 0.3), transparent);
+            z-index: -1;
+            animation: spinBorder 10s linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes spinBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .float-circle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.2;
+            animation: floatCircle 15s ease-in-out infinite alternate;
+        }
+        .float-circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 15%;
+            left: 5%;
+            background: radial-gradient(circle, #aacbff, transparent);
+            animation-duration: 18s;
+        }
+        .float-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: 10%;
+            right: 5%;
+            background: radial-gradient(circle, #c0dbff, transparent);
+            animation-duration: 22s;
+            animation-delay: -5s;
+        }
+        @keyframes floatCircle {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -30px) scale(1.2); }
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.8rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a3a7a, #4a8af4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            background-size: 200% 200%;
+            animation: textShimmer 6s ease-in-out infinite;
+        }
+        .logo i {
+            -webkit-text-fill-color: #4a8af4;
+            margin-right: 6px;
+        }
+        .logo span {
+            -webkit-text-fill-color: #5a7a9a;
+            font-weight: 400;
+            font-size: 1rem;
+            background: none;
+        }
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+}
+.nav-links a {
+    text-decoration: none;
+    color: #2a4a7a;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+    transition: 0.2s;
+    position: relative;
+}
+.nav-links a:hover {
+    border-bottom-color: #4a8af4;
+    color: #1a3a7a;
+}
+.btn-download {
+    background: linear-gradient(135deg, #1a5adf, #4a8af4);
+    color: white !important;
+    padding: 0.5rem 1.6rem;
+    border-radius: 60px;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(26, 90, 223, 0.2);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 90, 223, 0.3);
+}
+.btn-download::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: rotate(45deg) translateX(-100%);
+    transition: 0.6s;
+}
+.btn-download:hover::after {
+    transform: rotate(45deg) translateX(100%);
+}
+.hero {
+    text-align: center;
+    padding: 1.2rem 0 2.2rem;
+}
+.hero h1 {
+    font-size: 3.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0a2a6a, #3a7af0, #7ab0ff, #3a7af0);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    animation: textShimmer 8s ease-in-out infinite;
+}
+.hero .sub {
+    font-size: 1.3rem;
+    color: #3a5a8a;
+    background: rgba(255, 255, 255, 0.5);
+    display: inline-block;
+    padding: 0.3rem 2.5rem;
+    border-radius: 60px;
+    backdrop-filter: blur(4px);
+    margin-top: 0.2rem;
+    font-weight: 400;
+}
+.hero p {
+    max-width: 720px;
+    margin: 1.2rem auto 0;
+    font-size: 1.1rem;
+    color: #2a4a6a;
+    line-height: 1.8;
+}
+.hero .badge-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+}
+.badge {
+    background: white;
+    padding: 0.5rem 1.8rem;
+    border-radius: 60px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1a4a8a;
+    box-shadow: 0 4px 12px rgba(30, 80, 180, 0.06);
+    border: 1px solid rgba(70, 140, 255, 0.12);
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.badge:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 80, 180, 0.10);
+}
+.badge.primary {
+    background: linear-gradient(135deg, #1a5adf, #4a8af4);
+    color: white;
+    border: none;
+}
+.preview-section {
+    margin: 3rem 0;
+    background: white;
+    border-radius: 32px;
+    padding: 2.2rem 2rem;
+    box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
+    border: 1px solid rgba(200, 220, 255, 0.3);
+    transition: box-shadow 0.3s;
+    position: relative;
+}
+.preview-section:hover {
+    box-shadow: 0 12px 48px rgba(30, 60, 120, 0.12);
+}
+.preview-section .mockup-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+.phone {
+    background: linear-gradient(145deg, #f5faff, #e8f2fc);
+    border-radius: 36px;
+    padding: 1.2rem 1rem;
+    width: 220px;
+    box-shadow: 0 16px 48px rgba(20, 60, 140, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.phone:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 64px rgba(20, 60, 140, 0.15);
+}
+.phone .screen {
+    background: white;
+    border-radius: 24px;
+    padding: 1.2rem 0.8rem;
+    text-align: center;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+.screen .img-placeholder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: linear-gradient(145deg, #d6e8ff, #b6d4ff);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a4a8a;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+}
+.screen .mock-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.3rem;
+}
+.mock-btns span {
+    background: #eef5ff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 30px;
+    font-size: 0.65rem;
+    color: #2a5a9a;
+    flex: 1;
+    text-align: center;
+}
+.preview-desc {
+    flex: 1;
+    min-width: 240px;
+}
+.preview-desc h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0a2a6a;
+    margin-bottom: 0.5rem;
+}
+.preview-desc ul {
+    list-style: none;
+    margin-top: 0.8rem;
+}
+.preview-desc ul li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #2a4a6a;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(70, 140, 255, 0.06);
+}
+.preview-desc ul li i {
+    color: #4a8af4;
+    width: 1.4rem;
+    text-align: center;
+}
+.preview-desc .social-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+}
+.social-tags span {
+    background: #eef5ff;
+    padding: 0.2rem 1.2rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    color: #1a4a8a;
+}
+.section-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #0a2a6a;
+    text-align: center;
+    margin: 3.2rem 0 0.6rem;
+    background: linear-gradient(135deg, #0a2a6a, #4a8af4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: textShimmer 6s ease-in-out infinite;
+}
+.section-title i {
+    -webkit-text-fill-color: #4a8af4;
+    margin-right: 8px;
+}
+.section-sub {
+    text-align: center;
+    color: #4a6a8a;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+}
+.grid-item {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 28px;
+    padding: 2rem 1.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(30, 60, 120, 0.03);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+.grid-item:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 40px rgba(30, 80, 180, 0.12);
+}
+.grid-item::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(74, 138, 244, 0.06), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+.grid-item:hover::after {
+    opacity: 1;
+}
+.grid-item .icon {
+    font-size: 2.6rem;
+    color: #1a5adf;
+    margin-bottom: 0.4rem;
+}
+.grid-item h4 {
+    font-size: 1.3rem;
+    color: #0a2a6a;
+    margin-bottom: 0.4rem;
+}
+.grid-item p {
+    font-size: 0.95rem;
+    color: #3a5a7a;
+    line-height: 1.6;
+}
+.tech-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 2.5rem 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 32px;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+    transition: box-shadow 0.3s;
+}
+.tech-row:hover {
+    box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
+}
+.tech-row .col {
+    flex: 1;
+    min-width: 200px;
+}
+.tech-row .col h4 {
+    font-size: 1.2rem;
+    color: #0a2a6a;
+    margin-bottom: 0.8rem;
+}
+.tech-row .col ul {
+    list-style: none;
+}
+.tech-row .col ul li {
+    padding: 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #2a4a6a;
+}
+.tech-row .col ul li i {
+    color: #4a8af4;
+    width: 1.2rem;
+}
+.steps {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.8rem;
+    margin: 2rem 0 1.5rem;
+}
+.step {
+    background: white;
+    border-radius: 28px;
+    padding: 1.5rem 2rem;
+    flex: 1;
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(30, 60, 120, 0.04);
+    border: 1px solid rgba(200, 220, 255, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(30, 60, 120, 0.08);
+}
+.step .num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #4a8af4;
+    opacity: 0.3;
+    line-height: 1;
+}
+.step h5 {
+    font-size: 1.1rem;
+    color: #0a2a6a;
+    margin: 0.2rem 0;
+}
+.step p {
+    font-size: 0.9rem;
+    color: #4a6a8a;
+}
+.download-area {
+    background: linear-gradient(135deg, rgba(26, 90, 223, 0.04), rgba(74, 138, 244, 0.08));
+    border-radius: 40px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    margin: 2.5rem 0;
+    border: 1px solid rgba(70, 140, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.download-area::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(74,138,244,0.05), transparent 60%);
+    animation: floatGlow 15s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+.download-area .big-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a5adf, #4a8af4);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 0.9rem 3.5rem;
+    border-radius: 80px;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba(26, 90, 223, 0.25);
+    transition: 0.2s;
+    margin-top: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+.download-area .big-btn i {
+    margin-right: 12px;
+}
+.download-area .big-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 40px rgba(26, 90, 223, 0.35);
+}
+.download-area .big-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: rotate(45deg) translateX(-100%);
+    transition: 0.6s;
+}
+.download-area .big-btn:hover::after {
+    transform: rotate(45deg) translateX(100%);
+}
+.download-area .meta {
+    color: #4a6a8a;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    position: relative;
+}
+.community-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+.community-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(200, 220, 255, 0.2);
+    transition: 0.3s;
+}
+.community-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(30, 60, 120, 0.08);
+}
+.community-card i {
+    font-size: 2.4rem;
+    color: #1a5adf;
+    margin-bottom: 0.4rem;
+}
+.community-card h5 {
+    font-size: 1rem;
+    color: #0a2a6a;
+}
+.community-card p {
+    font-size: 0.85rem;
+    color: #4a6a8a;
+}
+.community-card .qr-placeholder {
+    width: 100px;
+    height: 100px;
+    background: #eef5ff;
+    border-radius: 16px;
+    margin: 0.6rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a4a8a;
+    font-size: 0.7rem;
+    border: 2px dashed #b6d4ff;
+}
+.stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5rem 4.5rem;
+    margin: 2.5rem 0 1.5rem;
+    padding: 1.8rem 1rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 60px;
+    backdrop-filter: blur(4px);
+}
+.stats .stat-item {
+    text-align: center;
+}
+.stat-item .num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #1a5adf;
+}
+.stat-item .label {
+    font-size: 0.9rem;
+    color: #4a6a8a;
+}
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(100, 160, 255, 0.12);
+            color: #4a6a8a;
+            font-size: 0.9rem;
+        }
+        .footer .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .footer .links a {
+            color: #1a5adf;
+            text-decoration: none;
+        }
+        .footer .links a:hover {
+            text-decoration: underline;
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 768px) {
+            .container { padding: 1.5rem; border-radius: 32px; }
+            .hero h1 { font-size: 2.6rem; }
+            .navbar { flex-direction: column; align-items: flex-start; }
+            .nav-links { gap: 1rem; }
+            .phone { width: 170px; }
+            .preview-section { padding: 1.5rem; }
+            .stats { gap: 1.5rem; border-radius: 32px; }
+            .section-title { font-size: 2rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="particles-canvas"></canvas>
-  <div class="scanline"></div>
 
-  <nav>
-    <div class="logo">随机<span>美图</span></div>
-    <ul class="nav-links">
-      <li><a href="#features">功能特性</a></li>
-      <li><a href="#showcase">界面预览</a></li>
-    </ul>
-  </nav>
-  <section class="hero">
-    <div class="hero-badge">AndLua 随机看图神器</div>
-    <h1>
-      <span class="gradient-text">随机美图</span><br>
-      随机生成器
-    </h1>
-    <p class="hero-subtitle">
-      基于 AndLua+ 开发的高性能随机看图应用<br>
-      从服务端实时获取图片，支持随机浏览、顺序切换、本地保存 作者:炼狱魅魔q群877825295
-    </p>
-    <div class="hero-buttons">
-      <a href="https://1819739529.share.123pan.cn/123pan/NwGEjv-ipMed" class="btn btn-primary">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        转存免费下载
-      </a>
-      <a href="#features" class="btn btn-secondary">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="16" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12.01" y2="8"/>
-        </svg>
-        了解更多
-      </a>
-            <a href="/jz.html" class="btn btn-donate">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-        捐赠支持
-      </a>
-      <a href="/yuan.html" class="btn btn-source">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        免费下载2
-      </a>
+    <div class="float-circle"></div>
+    <div class="float-circle"></div>
 
-    </div>
-  </section>
+    <div class="container">
 
-  <section class="showcase" id="showcase">
-    <div class="phone-mockup">
-      <div class="phone-screen">
-        <div class="phone-header">随机看图</div>
-        <div class="phone-image-area">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8f1fa,#d0e3f7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
-            <div style="width:60px;height:60px;border-radius:50%;border:3px solid var(--primary);border-top-color:transparent;animation:spin 1s linear infinite;"></div>
-            <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-            <span style="color:#2a6fc7;font-size:12px;">正在加载...</span>
-          </div>
-          <div class="phone-image-overlay">共获取到 1 张图片</div>
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-images"></i>随机美图 <span>· 看图神器</span></div>
+            <div class="nav-links">
+                <a href="#features"><i class="fas fa-th-list"></i> 功能</a>
+                <a href="#tech"><i class="fas fa-code"></i> 技术</a>
+                <a href="#download"><i class="fas fa-download"></i> 下载</a>
+                <!-- GitHub 链接已移除 -->
+                <a href="#download" class="btn-download"><i class="fas fa-arrow-down"></i> APK下载</a>
+            </div>
+        </nav>
+
+        <header class="hero fade-up">
+            <h1>随机美图</h1>
+            <div class="sub"><i class="fas fa-mobile-alt"></i> 基于 AndLua+  ·  轻量随机看图</div>
+            <p>
+                <i class="fas fa-check-circle" style="color:#4a8af4;"></i> 内置 6 个图源接口，支持自定义 API 图源。<br />
+                <i class="fas fa-check-circle" style="color:#4a8af4;"></i> 一键随机、顺序浏览、双击翻页、本地保存 + 智能缓存。
+            </p>
+            <div class="badge-group">
+                <span class="badge"><i class="fab fa-android"></i> AndLua+</span>
+                <span class="badge"><i class="fas fa-images"></i> 6+ 图源</span>
+                <span class="badge"><i class="fas fa-bolt"></i> 智能缓存</span>
+                <span class="badge primary"><i class="fas fa-save"></i> 保存相册</span>
+                <span class="badge"><i class="fas fa-paint-brush"></i> 蓝白主题</span>
+            </div>
+        </header>
+        <section class="preview-section fade-up">
+    <div class="mockup-row">
+        <div class="phone">
+            <div class="screen">
+                <div class="img-placeholder"><i class="fas fa-image"></i> 随机美图</div>
+                <div class="mock-btns">
+                    <span><i class="fas fa-chevron-left"></i></span>
+                    <span><i class="fas fa-random"></i></span>
+                    <span><i class="fas fa-chevron-right"></i></span>
+                </div>
+                <div style="margin-top:0.5rem; font-size:0.6rem; color:#5a7a9a;">
+                    <i class="fas fa-hand-pointer"></i> 双击切换 · <i class="fas fa-save"></i> 保存相册
+                </div>
+            </div>
         </div>
-        <div class="phone-controls">
-          <div class="phone-btn-row">
-            <div class="phone-btn">上一张</div>
-            <div class="phone-btn" style="background:rgba(74,158,255,0.15);border-color:rgba(74,158,255,0.3);color:#2a6fc7;">随机</div>
-            <div class="phone-btn">下一张</div>
-          </div>
-          <div class="phone-btn-row">
-            <div class="phone-btn">刷新列表</div>
-            <div class="phone-btn">保存图片</div>
-          </div>
+        <div class="phone">
+            <div class="screen">
+                <div style="width:100%; aspect-ratio:1/1; background: linear-gradient(145deg, #e8f0fe, #c8dcff); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#1a4a8a; font-weight:600; font-size:0.8rem; margin-bottom:0.8rem;">
+                    <i class="fas fa-cog" style="font-size:2rem;"></i>
+                    <span style="margin-top:4px;">设置菜单</span>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:0.2rem; justify-content:center;">
+                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💳 赞助</span>
+                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">📤 上传</span>
+                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">🌐 官网</span>
+                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💬 社群</span>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="preview-desc">
+            <h3><i class="fas fa-palette" style="color:#4a8af4;"></i> 清爽 · 蓝白设计</h3>
+            <ul>
+                <li><i class="fas fa-circle"></i> 圆角卡片 + 毛玻璃效果</li>
+                <li><i class="fas fa-circle"></i> 蓝色渐变主题，视觉舒适</li>
+                <li><i class="fas fa-circle"></i> 赞助二维码 / 图片上传入口</li>
+                <li><i class="fas fa-circle"></i> 启动公告弹窗，引导图源授权</li>
+                <li><i class="fas fa-circle"></i> 设置集成 QQ群 / KOOK 链接</li>
+            </ul>
+            <div class="social-tags">
+                <span><i class="fab fa-qq"></i> QQ群 877825295</span>
+                <span><i class="fas fa-link"></i> <a href="https://kook.vip/B2RczW" target="_blank" style="color:#1a4a8a;text-decoration:none;">KOOK 社群</a></span>
+                <span><i class="fas fa-qrcode"></i> 赞助支持</span>
+            </div>
+        </div>
     </div>
-  </section>
-  <section class="features" id="features">
-    <div class="section-title reveal">
-      <h2>核心<span class="gradient-text">功能</span></h2>
-      <p>专为看图体验打造，简洁高效</p>
+</section>
+
+<h2 class="section-title fade-up" id="features"><i class="fas fa-star"></i> 核心功能</h2>
+<p class="section-sub fade-up">专为看图体验打造，简洁高效，开箱即用</p>
+<div class="grid">
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fas fa-globe"></i></div>
+        <h4>多图源聚合</h4>
+        <p>内置 6 个图源接口（标准美图 / 二次元 ACG 等），支持用户自定义 API 图源，实现个性化内容聚合。</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x1F4F7;</div>
-        <h3>服务端获取</h3>
-        <p>通过 HTTP 请求从服务器实时拉取图片列表，JSON 数据解析，支持动态更新图库内容</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x1F3B2;</div>
-        <h3>随机浏览</h3>
-        <p>一键随机切换图片，每次都有新惊喜。支持上一张/下一张顺序浏览，循环播放</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x1F4BE;</div>
-        <h3>本地保存</h3>
-        <p>喜欢的图片一键保存到手机相册，自动创建"随机看图"文件夹，方便管理</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x26A1;</div>
-        <h3>双击切换</h3>
-        <p>支持双击图片区域快速切换下一张，操作流畅，体验丝滑</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x1F504;</div>
-        <h3>实时刷新</h3>
-        <p>随时刷新获取最新图片列表，服务器新增图片立即同步到客户端</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">&#x1F4F1;</div>
-        <h3>AndLua 原生</h3>
-        <p>基于 AndLua+ 框架开发，纯原生 Android 体验，轻量快速，兼容性强</p>
-      </div>
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fas fa-random"></i></div>
+        <h4>随机 + 顺序浏览</h4>
+        <p>一键随机切换，支持上一张 / 下一张顺序浏览，循环播放，双击图片快速翻页。</p>
     </div>
-  </section>
-
-  <section class="stats">
-    <div class="stats-grid reveal">
-      <div class="stat-item">
-        <h3 id="stat1">0</h3>
-        <p>毫秒响应</p>
-      </div>
-      <div class="stat-item">
-        <h3 id="stat2">0</h3>
-        <p>支持格式</p>
-      </div>
-      <div class="stat-item">
-        <h3 id="stat3">0</h3>
-        <p>操作方式</p>
-      </div>
-      <div class="stat-item">
-        <h3 id="stat4">0</h3>
-        <p>代码行数</p>
-      </div>
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fas fa-save"></i></div>
+        <h4>本地保存</h4>
+        <p>图片一键保存至手机相册，自动创建“随机看图”文件夹，方便管理。</p>
     </div>
-  </section>
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fas fa-bolt"></i></div>
+        <h4>智能缓存</h4>
+        <p>5 分钟缓存机制，有效减少重复请求，提升加载速度，节省流量。</p>
+    </div>
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fab fa-android"></i></div>
+        <h4>AndLua+ 原生</h4>
+        <p>纯 Lua 脚本编写，无需复杂环境即可快速打包 APK，适合个人开发者快速迭代。</p>
+    </div>
+    <div class="grid-item fade-up">
+        <div class="icon"><i class="fas fa-paint-brush"></i></div>
+        <h4>清爽 UI</h4>
+        <p>蓝色渐变主题 + 圆角卡片式布局，设置菜单集成赞助、上传、官网、社群入口。</p>
+    </div>
+</div>
+                <h2 class="section-title fade-up" id="tech"><i class="fas fa-cogs"></i> 技术 & 图源</h2>
+        <div class="tech-row fade-up">
+            <div class="col">
+                <h4><i class="fas fa-microchip"></i> 技术架构</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> 纯 Lua + AndLua+ 框架</li>
+                    <li><i class="fas fa-check-circle"></i> 模块化设计（缓存/图源/UI 分离）</li>
+                    <li><i class="fas fa-check-circle"></i> 轻量级，APK 仅 2MB 左右</li>
+                    <li><i class="fas fa-check-circle"></i> 支持 Android 5.0+</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4><i class="fas fa-images"></i> 内置图源</h4>
+                <ul>
+                    <li><i class="fas fa-palette"></i> 标准美图（综合）</li>
+                    <li><i class="fas fa-dragon"></i> 二次元 ACG</li>
+                    <li><i class="fas fa-camera-retro"></i> 摄影精选</li>
+                    <li><i class="fas fa-cat"></i> 动物萌宠</li>
+                    <li><i class="fas fa-mountain"></i> 风景壁纸</li>
+                    <li><i class="fas fa-user-astronaut"></i> 科幻概念</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4><i class="fas fa-plug"></i> 自定义扩展</h4>
+                <ul>
+                    <li><i class="fas fa-code"></i> 支持 JSON/API 接口</li>
+                    <li><i class="fas fa-edit"></i> 可添加任意图源 URL</li>
+                    <li><i class="fas fa-sync-alt"></i> 实时切换图源</li>
+                    <li><i class="fas fa-shield-alt"></i> 权限管理（存储/网络）</li>
+                </ul>
+            </div>
+        </div>
 
-  <footer>
-    <div class="logo">随机<span>美图</span></div>
-    <p>基于 AndLua+ 开发 | 开源免费 | 2026</p>
-  </footer>
-  <script>
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null };
+        <h2 class="section-title fade-up"><i class="fas fa-list-ol"></i> 快速上手</h2>
+        <div class="steps">
+            <div class="step fade-up">
+                <div class="num">1</div>
+                <h5><i class="fas fa-download"></i> 下载安装</h5>
+                <p>从 123pan 或社群下载 APK，允许安装未知来源应用。</p>
+            </div>
+            <div class="step fade-up">
+                <div class="num">2</div>
+                <h5><i class="fas fa-folder-open"></i> 选择图源</h5>
+                <p>启动后弹窗选择内置图源或添加自定义 API。</p>
+            </div>
+            <div class="step fade-up">
+                <div class="num">3</div>
+                <h5><i class="fas fa-eye"></i> 开始看图</h5>
+                <p>点击随机按钮，双击切换，喜欢的图片一键保存。</p>
+            </div>
+        </div>
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+        <div class="stats fade-up">
+            <div class="stat-item"><div class="num">6</div><div class="label">内置图源</div></div>
+            <div class="stat-item"><div class="num">5min</div><div class="label">智能缓存</div></div>
+            <div class="stat-item"><div class="num"><i class="fas fa-bolt"></i></div><div class="label">毫秒响应</div></div>
+            <div class="stat-item"><div class="num"><i class="fas fa-puzzle-piece"></i></div><div class="label">模块化架构</div></div>
+        </div>
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-        this.color = Math.random() > 0.5 ? 'rgba(0, 240, 255,' : 'rgba(112, 0, 255,';
-        this.opacity = Math.random() * 0.5 + 0.1;
-      }
+        <!-- 下载区：链接改为你的 123pan 地址 -->
+        <div class="download-area fade-up" id="download">
+            <h3 style="font-size:2rem; color:#0a2a6a;"><i class="fas fa-rocket"></i> 立即体验</h3>
+            <p style="color:#4a6a8a; max-width:500px; margin:0.4rem auto;">下载最新版 APK，开启你的随机美图之旅</p>
+            <a href="https://1819739529.share.123pan.cn/123pan/NwGEjv-ipMed" class="big-btn" target="_blank"><i class="fas fa-cloud-download-alt"></i> 下载 APK (最新版)</a>
+            <!-- ↑ 将 href="#" 改为你的实际 123pan 链接 ↑ -->
+            <div class="meta">
+                <i class="fas fa-shield-alt"></i> 开源免费 · 无广告 · 权限透明
+            </div>
+        </div>
 
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
+        <h2 class="section-title fade-up"><i class="fas fa-users"></i> 社区 & 支持</h2>
+        <div class="community-grid">
+            <div class="community-card fade-up">
+                <i class="fab fa-qq"></i>
+                <h5>QQ 群</h5>
+                <p>群号 877825295<br />交流反馈、获取更新</p>
+            </div>
+            <div class="community-card fade-up">
+                <i class="fas fa-comment-dots"></i>
+                <h5>KOOK 社群</h5>
+                <p><a href="https://kook.vip/B2RczW" target="_blank" style="color:#1a5adf;text-decoration:none;">点击加入</a></p>
+            </div>
+            <!-- 上传美图 - 点击跳转到 sc.lianyu.best -->
+            <div class="community-card fade-up">
+                <i class="fas fa-upload"></i>
+                <h5><a href="https://sc.lianyu.best" target="_blank" style="color:#0a2a6a;text-decoration:none;">上传美图</a></h5>
+                <p><a href="https://sc.lianyu.best" target="_blank" style="color:#4a6a8a;text-decoration:none;">投稿你的美图</a></p>
+            </div>
+            <!-- 赞助作者 - 已删除二维码方框，保留微信/支付宝文字 -->
+            <div class="community-card fade-up">
+                <i class="fas fa-qrcode"></i>
+                <h5>赞助作者</h5>
+                <p style="font-size:0.85rem; color:#4a6a8a;">微信 / 支付宝</p>
+                <p style="font-size:0.7rem;"><a href="jz.html" target="_blank" style="color:#1a5adf;text-decoration:none;">点击捐赠</a></p>
+            </div>
+        </div>
 
-        if (this.x > canvas.width) this.x = 0;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        if (this.y < 0) this.y = canvas.height;
+        <footer class="footer fade-up">
+            <div class="links">
+                <!-- GitHub 链接已移除 -->
+                <a href="https://docs.qq.com/doc/DUXF3VWtPUXdkUGtr#"><i class="fas fa-history"></i> 更新日志</a>
+                <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=tJSZtVcPqUQZ7VYt9%2F7iBgGy4XQoHaPQcHpr%2BUcdS4JAVx6d8m3oM5KCtUh6My5M&busi_data=eyJncm91cENvZGUiOiI4Nzc4MjUyOTUiLCJ0b2tlbiI6ImlOYVVNN3c1cWhkTGdqb3M0WjBpbE4reHdTYVUydk8xdDJudEQvL1l0b2toUkNTSFU2NTY2cFlMV2NuM0YzYlciLCJ1aW4iOiIxNDQzMTkzNDU0In0%3D&data=vCJAMMAYuIt1CnY6zLjipG0hC9kn7ybaUDsAHO3jTXCHTwlBbtGLriUirnBAFMv2yePjh7mZ2nV7nERugMTvkw&svctype=4&tempid=h5_group_info"><i class="fab fa-qq"></i> QQ群 877825295</a>
+                <a href="jz.html" target="_blank"><i class="fas fa-coffee"></i> 赞助支持</a>
+            </div>
+            <p><i class="fas fa-copyright"></i> 随机美图 · 基于 AndLua+ 开发 · 免费使用 · 2026</p>
+            <p style="font-size:0.8rem; opacity:0.6; margin-top:0.3rem;">
+                <i class="fas fa-code-branch"></i> 模块化设计 · 缓存/图源/UI 分离 · 易于二次开发
+            </p>
+        </footer>
 
-        if (mouse.x != null) {
-          let dx = mouse.x - this.x;
-          let dy = mouse.y - this.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            this.x -= dx * 0.01;
-            this.y -= dy * 0.01;
-          }
-        }
-      }
+    </div>
 
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color + this.opacity + ')';
-        ctx.fill();
-      }
-    }
+    <script>
+        (function() {
+            const elements = document.querySelectorAll('.fade-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -40px 0px'
+            });
+            elements.forEach(el => observer.observe(el));
+        })();
+    </script>
 
-    function initParticles() {
-      particles = [];
-      const count = Math.min(150, (canvas.width * canvas.height) / 8000);
-      for (let i = 0; i < count; i++) {
-        particles.push(new Particle());
-      }
-    }
-    initParticles();
-    function connectParticles() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.1 * (1 - distance / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      connectParticles();
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.x;
-      mouse.y = e.y;
-    });
-    window.addEventListener('mouseleave', () => {
-      mouse.x = null;
-      mouse.y = null;
-    });
-
-    const reveals = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => revealObserver.observe(el));
-    function animateNumber(id, target, suffix = '') {
-      const el = document.getElementById(id);
-      let current = 0;
-      const increment = target / 60;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          current = target;
-          clearInterval(timer);
-        }
-        el.textContent = Math.floor(current) + suffix;
-      }, 20);
-    }
-
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateNumber('stat1', 200, '+');
-          animateNumber('stat2', 6, '+');
-          animateNumber('stat3', 4, '+');
-          animateNumber('stat4', 300, '+');
-          statsObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    statsObserver.observe(document.querySelector('.stats'));
-    window.addEventListener('scroll', () => {
-      const nav = document.querySelector('nav');
-      if (window.scrollY > 50) {
-        nav.style.padding = '12px 40px';
-        nav.style.background = 'rgba(255, 255, 255, 0.95)';
-      } else {
-        nav.style.padding = '20px 40px';
-        nav.style.background = 'rgba(255, 255, 255, 0.7)';
-      }
-    });
-  </script>
 </body>
 </html>
