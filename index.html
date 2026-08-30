@@ -49,10 +49,18 @@
             animation-delay: -5s;
         }
         @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -40px) scale(1.1); }
-            66% { transform: translate(-20px, 30px) scale(0.9); }
-            100% { transform: translate(10px, -10px) scale(1.05); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -40px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 30px) scale(0.9);
+            }
+            100% {
+                transform: translate(10px, -10px) scale(1.05);
+            }
         }
         .container {
             max-width: 1200px;
@@ -83,8 +91,12 @@
             opacity: 0.6;
         }
         @keyframes spinBorder {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
         .float-circle {
             position: fixed;
@@ -112,8 +124,12 @@
             animation-delay: -5s;
         }
         @keyframes floatCircle {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, -30px) scale(1.2); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(40px, -30px) scale(1.2);
+            }
         }
         .navbar {
             display: flex;
@@ -145,513 +161,558 @@
             background: none;
         }
         @keyframes textShimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
         .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 1.8rem;
-    flex-wrap: wrap;
-}
-.nav-links a {
-    text-decoration: none;
-    color: #2a4a7a;
-    font-weight: 500;
-    font-size: 0.95rem;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 4px;
-    transition: 0.2s;
-    position: relative;
-}
-.nav-links a:hover {
-    border-bottom-color: #4a8af4;
-    color: #1a3a7a;
-}
-.btn-download {
-    background: linear-gradient(135deg, #1a5adf, #4a8af4);
-    color: white !important;
-    padding: 0.5rem 1.6rem;
-    border-radius: 60px;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(26, 90, 223, 0.2);
-    transition: 0.3s;
-    position: relative;
-    overflow: hidden;
-}
-.btn-download:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26, 90, 223, 0.3);
-}
-.btn-download::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.25), transparent);
-    transform: rotate(45deg) translateX(-100%);
-    transition: 0.6s;
-}
-.btn-download:hover::after {
-    transform: rotate(45deg) translateX(100%);
-}
-.hero {
-    text-align: center;
-    padding: 1.2rem 0 2.2rem;
-}
-.hero h1 {
-    font-size: 3.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #0a2a6a, #3a7af0, #7ab0ff, #3a7af0);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -1px;
-    line-height: 1.2;
-    animation: textShimmer 8s ease-in-out infinite;
-}
-.hero .sub {
-    font-size: 1.3rem;
-    color: #3a5a8a;
-    background: rgba(255, 255, 255, 0.5);
-    display: inline-block;
-    padding: 0.3rem 2.5rem;
-    border-radius: 60px;
-    backdrop-filter: blur(4px);
-    margin-top: 0.2rem;
-    font-weight: 400;
-}
-.hero p {
-    max-width: 720px;
-    margin: 1.2rem auto 0;
-    font-size: 1.1rem;
-    color: #2a4a6a;
-    line-height: 1.8;
-}
-.hero .badge-group {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 2rem;
-}
-.badge {
-    background: white;
-    padding: 0.5rem 1.8rem;
-    border-radius: 60px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #1a4a8a;
-    box-shadow: 0 4px 12px rgba(30, 80, 180, 0.06);
-    border: 1px solid rgba(70, 140, 255, 0.12);
-    transition: 0.2s;
-    position: relative;
-    overflow: hidden;
-}
-.badge:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(30, 80, 180, 0.10);
-}
-.badge.primary {
-    background: linear-gradient(135deg, #1a5adf, #4a8af4);
-    color: white;
-    border: none;
-}
-.preview-section {
-    margin: 3rem 0;
-    background: white;
-    border-radius: 32px;
-    padding: 2.2rem 2rem;
-    box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
-    border: 1px solid rgba(200, 220, 255, 0.3);
-    transition: box-shadow 0.3s;
-    position: relative;
-}
-.preview-section:hover {
-    box-shadow: 0 12px 48px rgba(30, 60, 120, 0.12);
-}
-.preview-section .mockup-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 3rem;
-}
-.phone {
-    background: linear-gradient(145deg, #f5faff, #e8f2fc);
-    border-radius: 36px;
-    padding: 1.2rem 1rem;
-    width: 220px;
-    box-shadow: 0 16px 48px rgba(20, 60, 140, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.phone:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 64px rgba(20, 60, 140, 0.15);
-}
-.phone .screen {
-    background: white;
-    border-radius: 24px;
-    padding: 1.2rem 0.8rem;
-    text-align: center;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
-}
-.screen .img-placeholder {
-    width: 100%;
-    aspect-ratio: 1/1;
-    background: linear-gradient(145deg, #d6e8ff, #b6d4ff);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1a4a8a;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-}
-.screen .mock-btns {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.3rem;
-}
-.mock-btns span {
-    background: #eef5ff;
-    padding: 0.2rem 0.6rem;
-    border-radius: 30px;
-    font-size: 0.65rem;
-    color: #2a5a9a;
-    flex: 1;
-    text-align: center;
-}
-.preview-desc {
-    flex: 1;
-    min-width: 240px;
-}
-.preview-desc h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #0a2a6a;
-    margin-bottom: 0.5rem;
-}
-.preview-desc ul {
-    list-style: none;
-    margin-top: 0.8rem;
-}
-.preview-desc ul li {
-    padding: 0.5rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    color: #2a4a6a;
-    font-size: 1rem;
-    border-bottom: 1px solid rgba(70, 140, 255, 0.06);
-}
-.preview-desc ul li i {
-    color: #4a8af4;
-    width: 1.4rem;
-    text-align: center;
-}
-.preview-desc .social-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.2rem;
-}
-.social-tags span {
-    background: #eef5ff;
-    padding: 0.2rem 1.2rem;
-    border-radius: 40px;
-    font-size: 0.8rem;
-    color: #1a4a8a;
-}
-.section-title {
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: #0a2a6a;
-    text-align: center;
-    margin: 3.2rem 0 0.6rem;
-    background: linear-gradient(135deg, #0a2a6a, #4a8af4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% 200%;
-    animation: textShimmer 6s ease-in-out infinite;
-}
-.section-title i {
-    -webkit-text-fill-color: #4a8af4;
-    margin-right: 8px;
-}
-.section-sub {
-    text-align: center;
-    color: #4a6a8a;
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.8rem;
-}
-.grid-item {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 28px;
-    padding: 2rem 1.6rem;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 16px rgba(30, 60, 120, 0.03);
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-}
-.grid-item:hover {
-    transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 12px 40px rgba(30, 80, 180, 0.12);
-}
-.grid-item::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center, rgba(74, 138, 244, 0.06), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s;
-    pointer-events: none;
-}
-.grid-item:hover::after {
-    opacity: 1;
-}
-.grid-item .icon {
-    font-size: 2.6rem;
-    color: #1a5adf;
-    margin-bottom: 0.4rem;
-}
-.grid-item h4 {
-    font-size: 1.3rem;
-    color: #0a2a6a;
-    margin-bottom: 0.4rem;
-}
-.grid-item p {
-    font-size: 0.95rem;
-    color: #3a5a7a;
-    line-height: 1.6;
-}
-.tech-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin: 2.5rem 0;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 32px;
-    padding: 2rem;
-    backdrop-filter: blur(4px);
-    transition: box-shadow 0.3s;
-}
-.tech-row:hover {
-    box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
-}
-.tech-row .col {
-    flex: 1;
-    min-width: 200px;
-}
-.tech-row .col h4 {
-    font-size: 1.2rem;
-    color: #0a2a6a;
-    margin-bottom: 0.8rem;
-}
-.tech-row .col ul {
-    list-style: none;
-}
-.tech-row .col ul li {
-    padding: 0.4rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: #2a4a6a;
-}
-.tech-row .col ul li i {
-    color: #4a8af4;
-    width: 1.2rem;
-}
-.steps {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.8rem;
-    margin: 2rem 0 1.5rem;
-}
-.step {
-    background: white;
-    border-radius: 28px;
-    padding: 1.5rem 2rem;
-    flex: 1;
-    min-width: 180px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(30, 60, 120, 0.04);
-    border: 1px solid rgba(200, 220, 255, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.step:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(30, 60, 120, 0.08);
-}
-.step .num {
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: #4a8af4;
-    opacity: 0.3;
-    line-height: 1;
-}
-.step h5 {
-    font-size: 1.1rem;
-    color: #0a2a6a;
-    margin: 0.2rem 0;
-}
-.step p {
-    font-size: 0.9rem;
-    color: #4a6a8a;
-}
-.download-area {
-    background: linear-gradient(135deg, rgba(26, 90, 223, 0.04), rgba(74, 138, 244, 0.08));
-    border-radius: 40px;
-    padding: 2.5rem 2rem;
-    text-align: center;
-    margin: 2.5rem 0;
-    border: 1px solid rgba(70, 140, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-.download-area::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 40%, rgba(74,138,244,0.05), transparent 60%);
-    animation: floatGlow 15s ease-in-out infinite alternate;
-    pointer-events: none;
-}
-.download-area .big-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #1a5adf, #4a8af4);
-    color: white;
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 0.9rem 3.5rem;
-    border-radius: 80px;
-    text-decoration: none;
-    box-shadow: 0 8px 28px rgba(26, 90, 223, 0.25);
-    transition: 0.2s;
-    margin-top: 0.8rem;
-    position: relative;
-    overflow: hidden;
-}
-.download-area .big-btn i {
-    margin-right: 12px;
-}
-.download-area .big-btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 40px rgba(26, 90, 223, 0.35);
-}
-.download-area .big-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-    transform: rotate(45deg) translateX(-100%);
-    transition: 0.6s;
-}
-.download-area .big-btn:hover::after {
-    transform: rotate(45deg) translateX(100%);
-}
-.download-area .meta {
-    color: #4a6a8a;
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    position: relative;
-}
-.community-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin: 1.5rem 0;
-}
-.community-card {
-    background: white;
-    border-radius: 24px;
-    padding: 1.5rem;
-    text-align: center;
-    border: 1px solid rgba(200, 220, 255, 0.2);
-    transition: 0.3s;
-}
-.community-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(30, 60, 120, 0.08);
-}
-.community-card i {
-    font-size: 2.4rem;
-    color: #1a5adf;
-    margin-bottom: 0.4rem;
-}
-.community-card h5 {
-    font-size: 1rem;
-    color: #0a2a6a;
-}
-.community-card p {
-    font-size: 0.85rem;
-    color: #4a6a8a;
-}
-.community-card .qr-placeholder {
-    width: 100px;
-    height: 100px;
-    background: #eef5ff;
-    border-radius: 16px;
-    margin: 0.6rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1a4a8a;
-    font-size: 0.7rem;
-    border: 2px dashed #b6d4ff;
-}
-.stats {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2.5rem 4.5rem;
-    margin: 2.5rem 0 1.5rem;
-    padding: 1.8rem 1rem;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 60px;
-    backdrop-filter: blur(4px);
-}
-.stats .stat-item {
-    text-align: center;
-}
-.stat-item .num {
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: #1a5adf;
-}
-.stat-item .label {
-    font-size: 0.9rem;
-    color: #4a6a8a;
-}
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2a4a7a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+            transition: 0.2s;
+            position: relative;
+        }
+        .nav-links a:hover {
+            border-bottom-color: #4a8af4;
+            color: #1a3a7a;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #1a5adf, #4a8af4);
+            color: white !important;
+            padding: 0.5rem 1.6rem;
+            border-radius: 60px;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(26, 90, 223, 0.2);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26, 90, 223, 0.3);
+        }
+        .btn-download::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: 0.6s;
+        }
+        .btn-download:hover::after {
+            transform: rotate(45deg) translateX(100%);
+        }
+
+        /* ===== 新增：小黄书社区按钮（粉暖色系） ===== */
+        .btn-community {
+            background: linear-gradient(135deg, #e85a7a, #f08a9a);
+            color: white !important;
+            padding: 0.5rem 1.6rem;
+            border-radius: 60px;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(232, 90, 122, 0.25);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+        .btn-community:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(232, 90, 122, 0.35);
+            color: white !important;
+            border-bottom-color: transparent !important;
+        }
+        .btn-community::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: 0.6s;
+        }
+        .btn-community:hover::after {
+            transform: rotate(45deg) translateX(100%);
+        }
+        .btn-community i {
+            margin-right: 6px;
+        }
+        /* ===== 新增结束 ===== */
+
+        .hero {
+            text-align: center;
+            padding: 1.2rem 0 2.2rem;
+        }
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0a2a6a, #3a7af0, #7ab0ff, #3a7af0);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            animation: textShimmer 8s ease-in-out infinite;
+        }
+        .hero .sub {
+            font-size: 1.3rem;
+            color: #3a5a8a;
+            background: rgba(255, 255, 255, 0.5);
+            display: inline-block;
+            padding: 0.3rem 2.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-top: 0.2rem;
+            font-weight: 400;
+        }
+        .hero p {
+            max-width: 720px;
+            margin: 1.2rem auto 0;
+            font-size: 1.1rem;
+            color: #2a4a6a;
+            line-height: 1.8;
+        }
+        .hero .badge-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+        .badge {
+            background: white;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1a4a8a;
+            box-shadow: 0 4px 12px rgba(30, 80, 180, 0.06);
+            border: 1px solid rgba(70, 140, 255, 0.12);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 80, 180, 0.10);
+        }
+        .badge.primary {
+            background: linear-gradient(135deg, #1a5adf, #4a8af4);
+            color: white;
+            border: none;
+        }
+        .preview-section {
+            margin: 3rem 0;
+            background: white;
+            border-radius: 32px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
+            border: 1px solid rgba(200, 220, 255, 0.3);
+            transition: box-shadow 0.3s;
+            position: relative;
+        }
+        .preview-section:hover {
+            box-shadow: 0 12px 48px rgba(30, 60, 120, 0.12);
+        }
+        .preview-section .mockup-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+        .phone {
+            background: linear-gradient(145deg, #f5faff, #e8f2fc);
+            border-radius: 36px;
+            padding: 1.2rem 1rem;
+            width: 220px;
+            box-shadow: 0 16px 48px rgba(20, 60, 140, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .phone:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 64px rgba(20, 60, 140, 0.15);
+        }
+        .phone .screen {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+        .screen .img-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: linear-gradient(145deg, #d6e8ff, #b6d4ff);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a4a8a;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        .screen .mock-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.3rem;
+        }
+        .mock-btns span {
+            background: #eef5ff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            color: #2a5a9a;
+            flex: 1;
+            text-align: center;
+        }
+        .preview-desc {
+            flex: 1;
+            min-width: 240px;
+        }
+        .preview-desc h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0a2a6a;
+            margin-bottom: 0.5rem;
+        }
+        .preview-desc ul {
+            list-style: none;
+            margin-top: 0.8rem;
+        }
+        .preview-desc ul li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #2a4a6a;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(70, 140, 255, 0.06);
+        }
+        .preview-desc ul li i {
+            color: #4a8af4;
+            width: 1.4rem;
+            text-align: center;
+        }
+        .preview-desc .social-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+        .social-tags span {
+            background: #eef5ff;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #1a4a8a;
+        }
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #0a2a6a;
+            text-align: center;
+            margin: 3.2rem 0 0.6rem;
+            background: linear-gradient(135deg, #0a2a6a, #4a8af4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: textShimmer 6s ease-in-out infinite;
+        }
+        .section-title i {
+            -webkit-text-fill-color: #4a8af4;
+            margin-right: 8px;
+        }
+        .section-sub {
+            text-align: center;
+            color: #4a6a8a;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+        }
+        .grid-item {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 2rem 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(30, 60, 120, 0.03);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .grid-item:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 12px 40px rgba(30, 80, 180, 0.12);
+        }
+        .grid-item::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(74, 138, 244, 0.06), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .grid-item:hover::after {
+            opacity: 1;
+        }
+        .grid-item .icon {
+            font-size: 2.6rem;
+            color: #1a5adf;
+            margin-bottom: 0.4rem;
+        }
+        .grid-item h4 {
+            font-size: 1.3rem;
+            color: #0a2a6a;
+            margin-bottom: 0.4rem;
+        }
+        .grid-item p {
+            font-size: 0.95rem;
+            color: #3a5a7a;
+            line-height: 1.6;
+        }
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2.5rem 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 32px;
+            padding: 2rem;
+            backdrop-filter: blur(4px);
+            transition: box-shadow 0.3s;
+        }
+        .tech-row:hover {
+            box-shadow: 0 8px 32px rgba(30, 60, 120, 0.06);
+        }
+        .tech-row .col {
+            flex: 1;
+            min-width: 200px;
+        }
+        .tech-row .col h4 {
+            font-size: 1.2rem;
+            color: #0a2a6a;
+            margin-bottom: 0.8rem;
+        }
+        .tech-row .col ul {
+            list-style: none;
+        }
+        .tech-row .col ul li {
+            padding: 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #2a4a6a;
+        }
+        .tech-row .col ul li i {
+            color: #4a8af4;
+            width: 1.2rem;
+        }
+        .steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin: 2rem 0 1.5rem;
+        }
+        .step {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem 2rem;
+            flex: 1;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(30, 60, 120, 0.04);
+            border: 1px solid rgba(200, 220, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(30, 60, 120, 0.08);
+        }
+        .step .num {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #4a8af4;
+            opacity: 0.3;
+            line-height: 1;
+        }
+        .step h5 {
+            font-size: 1.1rem;
+            color: #0a2a6a;
+            margin: 0.2rem 0;
+        }
+        .step p {
+            font-size: 0.9rem;
+            color: #4a6a8a;
+        }
+        .download-area {
+            background: linear-gradient(135deg, rgba(26, 90, 223, 0.04), rgba(74, 138, 244, 0.08));
+            border-radius: 40px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin: 2.5rem 0;
+            border: 1px solid rgba(70, 140, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .download-area::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(74, 138, 244, 0.05), transparent 60%);
+            animation: floatGlow 15s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .download-area .big-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a5adf, #4a8af4);
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 0.9rem 3.5rem;
+            border-radius: 80px;
+            text-decoration: none;
+            box-shadow: 0 8px 28px rgba(26, 90, 223, 0.25);
+            transition: 0.2s;
+            margin-top: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .download-area .big-btn i {
+            margin-right: 12px;
+        }
+        .download-area .big-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 40px rgba(26, 90, 223, 0.35);
+        }
+        .download-area .big-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: 0.6s;
+        }
+        .download-area .big-btn:hover::after {
+            transform: rotate(45deg) translateX(100%);
+        }
+        .download-area .meta {
+            color: #4a6a8a;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .community-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(200, 220, 255, 0.2);
+            transition: 0.3s;
+        }
+        .community-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 60, 120, 0.08);
+        }
+        .community-card i {
+            font-size: 2.4rem;
+            color: #1a5adf;
+            margin-bottom: 0.4rem;
+        }
+        .community-card h5 {
+            font-size: 1rem;
+            color: #0a2a6a;
+        }
+        .community-card p {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+        }
+        .community-card .qr-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #eef5ff;
+            border-radius: 16px;
+            margin: 0.6rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a4a8a;
+            font-size: 0.7rem;
+            border: 2px dashed #b6d4ff;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2.5rem 4.5rem;
+            margin: 2.5rem 0 1.5rem;
+            padding: 1.8rem 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+        .stats .stat-item {
+            text-align: center;
+        }
+        .stat-item .num {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #1a5adf;
+        }
+        .stat-item .label {
+            font-size: 0.9rem;
+            color: #4a6a8a;
+        }
         .footer {
             margin-top: 3.5rem;
             text-align: center;
@@ -684,18 +745,46 @@
             transform: translateY(0);
         }
         @media (max-width: 768px) {
-            .container { padding: 1.5rem; border-radius: 32px; }
-            .hero h1 { font-size: 2.6rem; }
-            .navbar { flex-direction: column; align-items: flex-start; }
-            .nav-links { gap: 1rem; }
-            .phone { width: 170px; }
-            .preview-section { padding: 1.5rem; }
-            .stats { gap: 1.5rem; border-radius: 32px; }
-            .section-title { font-size: 2rem; }
+            .container {
+                padding: 1.5rem;
+                border-radius: 32px;
+            }
+            .hero h1 {
+                font-size: 2.6rem;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .phone {
+                width: 170px;
+            }
+            .preview-section {
+                padding: 1.5rem;
+            }
+            .stats {
+                gap: 1.5rem;
+                border-radius: 32px;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
         }
         @media (max-width: 480px) {
-            .hero h1 { font-size: 2rem; }
-            .container { padding: 1rem; }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .nav-links .btn-download,
+            .nav-links .btn-community {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -712,20 +801,23 @@
                 <a href="#features"><i class="fas fa-th-list"></i> 功能</a>
                 <a href="#tech"><i class="fas fa-code"></i> 技术</a>
                 <a href="#download"><i class="fas fa-download"></i> 下载</a>
-                <!-- GitHub 链接已移除 -->
+                <!-- APK 下载按钮 -->
                 <a href="#download" class="btn-download"><i class="fas fa-arrow-down"></i> APK下载</a>
+                <!-- ===== 新增：小黄书社区按钮（点击跳转 w.lianyu.best） ===== -->
+                <a href="https://w.lianyu.best" class="btn-community" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> 小黄书社区</a>
+                <!-- ===== 新增结束 ===== -->
             </div>
         </nav>
 
         <header class="hero fade-up">
             <h1>随机美图</h1>
-            <div class="sub"><i class="fas fa-mobile-alt"></i> 基于 AndLua+  ·  轻量随机看图</div>
+            <div class="sub"><i class="fas fa-mobile-alt"></i> 基于 html  ·  轻量随机看图</div>
             <p>
                 <i class="fas fa-check-circle" style="color:#4a8af4;"></i> 内置 6 个图源接口，支持自定义 API 图源。<br />
                 <i class="fas fa-check-circle" style="color:#4a8af4;"></i> 一键随机、顺序浏览、双击翻页、本地保存 + 智能缓存。
             </p>
             <div class="badge-group">
-                <span class="badge"><i class="fab fa-android"></i> AndLua+</span>
+                <span class="badge"><i class="fab fa-android"></i> html+</span>
                 <span class="badge"><i class="fas fa-images"></i> 6+ 图源</span>
                 <span class="badge"><i class="fas fa-bolt"></i> 智能缓存</span>
                 <span class="badge primary"><i class="fas fa-save"></i> 保存相册</span>
@@ -733,92 +825,92 @@
             </div>
         </header>
         <section class="preview-section fade-up">
-    <div class="mockup-row">
-        <div class="phone">
-            <div class="screen">
-                <div class="img-placeholder"><i class="fas fa-image"></i> 随机美图</div>
-                <div class="mock-btns">
-                    <span><i class="fas fa-chevron-left"></i></span>
-                    <span><i class="fas fa-random"></i></span>
-                    <span><i class="fas fa-chevron-right"></i></span>
+            <div class="mockup-row">
+                <div class="phone">
+                    <div class="screen">
+                        <div class="img-placeholder"><i class="fas fa-image"></i> 随机美图</div>
+                        <div class="mock-btns">
+                            <span><i class="fas fa-chevron-left"></i></span>
+                            <span><i class="fas fa-random"></i></span>
+                            <span><i class="fas fa-chevron-right"></i></span>
+                        </div>
+                        <div style="margin-top:0.5rem; font-size:0.6rem; color:#5a7a9a;">
+                            <i class="fas fa-hand-pointer"></i> 双击切换 · <i class="fas fa-save"></i> 保存相册
+                        </div>
+                    </div>
                 </div>
-                <div style="margin-top:0.5rem; font-size:0.6rem; color:#5a7a9a;">
-                    <i class="fas fa-hand-pointer"></i> 双击切换 · <i class="fas fa-save"></i> 保存相册
+                <div class="phone">
+                    <div class="screen">
+                        <div style="width:100%; aspect-ratio:1/1; background: linear-gradient(145deg, #e8f0fe, #c8dcff); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#1a4a8a; font-weight:600; font-size:0.8rem; margin-bottom:0.8rem;">
+                            <i class="fas fa-cog" style="font-size:2rem;"></i>
+                            <span style="margin-top:4px;">设置菜单</span>
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.2rem; justify-content:center;">
+                            <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💳 赞助</span>
+                            <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">📤 上传</span>
+                            <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">🌐 官网</span>
+                            <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💬 社群</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-desc">
+                    <h3><i class="fas fa-palette" style="color:#4a8af4;"></i> 清爽 · 蓝白设计</h3>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> 圆角卡片 + 毛玻璃效果</li>
+                        <li><i class="fas fa-circle"></i> 蓝色渐变主题，视觉舒适</li>
+                        <li><i class="fas fa-circle"></i> 赞助二维码 / 图片上传入口</li>
+                        <li><i class="fas fa-circle"></i> 启动公告弹窗，引导图源授权</li>
+                        <li><i class="fas fa-circle"></i> 设置集成 QQ群 / KOOK 链接</li>
+                    </ul>
+                    <div class="social-tags">
+                        <span><i class="fab fa-qq"></i> QQ群 877825295</span>
+                        <span><i class="fas fa-link"></i> <a href="https://kook.vip/B2RczW" target="_blank" style="color:#1a4a8a;text-decoration:none;">KOOK 社群</a></span>
+                        <span><i class="fas fa-qrcode"></i> 赞助支持</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="phone">
-            <div class="screen">
-                <div style="width:100%; aspect-ratio:1/1; background: linear-gradient(145deg, #e8f0fe, #c8dcff); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#1a4a8a; font-weight:600; font-size:0.8rem; margin-bottom:0.8rem;">
-                    <i class="fas fa-cog" style="font-size:2rem;"></i>
-                    <span style="margin-top:4px;">设置菜单</span>
-                </div>
-                <div style="display:flex; flex-wrap:wrap; gap:0.2rem; justify-content:center;">
-                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💳 赞助</span>
-                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">📤 上传</span>
-                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">🌐 官网</span>
-                    <span style="background:#eef5ff; padding:0.1rem 0.5rem; border-radius:20px; font-size:0.5rem;">💬 社群</span>
-                </div>
-            </div>
-        </div>
-        <div class="preview-desc">
-            <h3><i class="fas fa-palette" style="color:#4a8af4;"></i> 清爽 · 蓝白设计</h3>
-            <ul>
-                <li><i class="fas fa-circle"></i> 圆角卡片 + 毛玻璃效果</li>
-                <li><i class="fas fa-circle"></i> 蓝色渐变主题，视觉舒适</li>
-                <li><i class="fas fa-circle"></i> 赞助二维码 / 图片上传入口</li>
-                <li><i class="fas fa-circle"></i> 启动公告弹窗，引导图源授权</li>
-                <li><i class="fas fa-circle"></i> 设置集成 QQ群 / KOOK 链接</li>
-            </ul>
-            <div class="social-tags">
-                <span><i class="fab fa-qq"></i> QQ群 877825295</span>
-                <span><i class="fas fa-link"></i> <a href="https://kook.vip/B2RczW" target="_blank" style="color:#1a4a8a;text-decoration:none;">KOOK 社群</a></span>
-                <span><i class="fas fa-qrcode"></i> 赞助支持</span>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-<h2 class="section-title fade-up" id="features"><i class="fas fa-star"></i> 核心功能</h2>
-<p class="section-sub fade-up">专为看图体验打造，简洁高效，开箱即用</p>
-<div class="grid">
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fas fa-globe"></i></div>
-        <h4>多图源聚合</h4>
-        <p>内置 6 个图源接口（标准美图 / 二次元 ACG 等），支持用户自定义 API 图源，实现个性化内容聚合。</p>
-    </div>
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fas fa-random"></i></div>
-        <h4>随机 + 顺序浏览</h4>
-        <p>一键随机切换，支持上一张 / 下一张顺序浏览，循环播放，双击图片快速翻页。</p>
-    </div>
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fas fa-save"></i></div>
-        <h4>本地保存</h4>
-        <p>图片一键保存至手机相册，自动创建“随机看图”文件夹，方便管理。</p>
-    </div>
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fas fa-bolt"></i></div>
-        <h4>智能缓存</h4>
-        <p>5 分钟缓存机制，有效减少重复请求，提升加载速度，节省流量。</p>
-    </div>
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fab fa-android"></i></div>
-        <h4>AndLua+ 原生</h4>
-        <p>纯 Lua 脚本编写，无需复杂环境即可快速打包 APK，适合个人开发者快速迭代。</p>
-    </div>
-    <div class="grid-item fade-up">
-        <div class="icon"><i class="fas fa-paint-brush"></i></div>
-        <h4>清爽 UI</h4>
-        <p>蓝色渐变主题 + 圆角卡片式布局，设置菜单集成赞助、上传、官网、社群入口。</p>
-    </div>
-</div>
-                <h2 class="section-title fade-up" id="tech"><i class="fas fa-cogs"></i> 技术 & 图源</h2>
+        <h2 class="section-title fade-up" id="features"><i class="fas fa-star"></i> 核心功能</h2>
+        <p class="section-sub fade-up">专为看图体验打造，简洁高效，开箱即用</p>
+        <div class="grid">
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fas fa-globe"></i></div>
+                <h4>多图源聚合</h4>
+                <p>内置 6 个图源接口（标准美图 / 二次元 ACG 等），支持用户自定义 API 图源，实现个性化内容聚合。</p>
+            </div>
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fas fa-random"></i></div>
+                <h4>随机 + 顺序浏览</h4>
+                <p>一键随机切换，支持上一张 / 下一张顺序浏览，循环播放，双击图片快速翻页。</p>
+            </div>
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fas fa-save"></i></div>
+                <h4>本地保存</h4>
+                <p>图片一键保存至手机相册，自动创建"随机看图"文件夹，方便管理。</p>
+            </div>
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h4>智能缓存</h4>
+                <p>5 分钟缓存机制，有效减少重复请求，提升加载速度，节省流量。</p>
+            </div>
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fab fa-android"></i></div>
+                <h4>html+ 原生</h4>
+                <p>纯 Lua 脚本编写，无需复杂环境即可快速打包 APK，适合个人开发者快速迭代。</p>
+            </div>
+            <div class="grid-item fade-up">
+                <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                <h4>清爽 UI</h4>
+                <p>蓝色渐变主题 + 圆角卡片式布局，设置菜单集成赞助、上传、官网、社群入口。</p>
+            </div>
+        </div>
+        <h2 class="section-title fade-up" id="tech"><i class="fas fa-cogs"></i> 技术 & 图源</h2>
         <div class="tech-row fade-up">
             <div class="col">
                 <h4><i class="fas fa-microchip"></i> 技术架构</h4>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> 纯 Lua + AndLua+ 框架</li>
+                    <li><i class="fas fa-check-circle"></i> 纯 Lua + html+ 框架</li>
                     <li><i class="fas fa-check-circle"></i> 模块化设计（缓存/图源/UI 分离）</li>
                     <li><i class="fas fa-check-circle"></i> 轻量级，APK 仅 2MB 左右</li>
                     <li><i class="fas fa-check-circle"></i> 支持 Android 5.0+</li>
@@ -872,12 +964,11 @@
             <div class="stat-item"><div class="num"><i class="fas fa-puzzle-piece"></i></div><div class="label">模块化架构</div></div>
         </div>
 
-        <!-- 下载区：链接改为你的 123pan 地址 -->
+        <!-- 下载区：123pan 地址 -->
         <div class="download-area fade-up" id="download">
             <h3 style="font-size:2rem; color:#0a2a6a;"><i class="fas fa-rocket"></i> 立即体验</h3>
             <p style="color:#4a6a8a; max-width:500px; margin:0.4rem auto;">下载最新版 APK，开启你的随机美图之旅</p>
             <a href="https://1819739529.share.123pan.cn/123pan/NwGEjv-ipMed" class="big-btn" target="_blank"><i class="fas fa-cloud-download-alt"></i> 下载 APK (最新版)</a>
-            <!-- ↑ 将 href="#" 改为你的实际 123pan 链接 ↑ -->
             <div class="meta">
                 <i class="fas fa-shield-alt"></i> 开源免费 · 无广告 · 权限透明
             </div>
@@ -901,7 +992,7 @@
                 <h5><a href="https://sc.lianyu.best" target="_blank" style="color:#0a2a6a;text-decoration:none;">上传美图</a></h5>
                 <p><a href="https://sc.lianyu.best" target="_blank" style="color:#4a6a8a;text-decoration:none;">点击跳转上传网站</a></p>
             </div>
-            <!-- 赞助作者 - 已删除二维码方框，保留微信/支付宝文字 -->
+            <!-- 赞助作者 -->
             <div class="community-card fade-up">
                 <i class="fas fa-qrcode"></i>
                 <h5>赞助作者</h5>
@@ -912,12 +1003,11 @@
 
         <footer class="footer fade-up">
             <div class="links">
-                <!-- GitHub 链接已移除 -->
                 <a href="https://docs.qq.com/doc/DUXF3VWtPUXdkUGtr#"><i class="fas fa-history"></i> 更新日志</a>
                 <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=tJSZtVcPqUQZ7VYt9%2F7iBgGy4XQoHaPQcHpr%2BUcdS4JAVx6d8m3oM5KCtUh6My5M&busi_data=eyJncm91cENvZGUiOiI4Nzc4MjUyOTUiLCJ0b2tlbiI6ImlOYVVNN3c1cWhkTGdqb3M0WjBpbE4reHdTYVUydk8xdDJudEQvL1l0b2toUkNTSFU2NTY2cFlMV2NuM0YzYlciLCJ1aW4iOiIxNDQzMTkzNDU0In0%3D&data=vCJAMMAYuIt1CnY6zLjipG0hC9kn7ybaUDsAHO3jTXCHTwlBbtGLriUirnBAFMv2yePjh7mZ2nV7nERugMTvkw&svctype=4&tempid=h5_group_info"><i class="fab fa-qq"></i> QQ群 877825295</a>
                 <a href="jz.html" target="_blank"><i class="fas fa-coffee"></i> 赞助支持</a>
             </div>
-            <p><i class="fas fa-copyright"></i> 随机美图 · 基于 AndLua+ 开发 · 免费使用 · 2026</p>
+            <p><i class="fas fa-copyright"></i> 随机美图 · 基于 html 开发 · 免费使用 · 2026</p>
             <p style="font-size:0.8rem; opacity:0.6; margin-top:0.3rem;">
                 <i class="fas fa-code-branch"></i> 模块化设计 · 缓存/图源/UI 分离 · 易于二次开发
             </p>
