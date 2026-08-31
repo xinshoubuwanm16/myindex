@@ -259,6 +259,30 @@
         }
         /* ===== 新增结束 ===== */
 
+        /* ===== 新增：网页版按钮样式 ===== */
+        .btn-web {
+            display: inline-block;
+            background: transparent;
+            color: #1a5adf;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.6rem 2.5rem;
+            border-radius: 80px;
+            border: 2px solid #4a8af4;
+            text-decoration: none;
+            transition: 0.2s;
+            margin-top: 0.8rem;
+        }
+        .btn-web:hover {
+            background: #4a8af4;
+            color: white;
+            box-shadow: 0 4px 16px rgba(74, 138, 244, 0.3);
+        }
+        .btn-web i {
+            margin-right: 6px;
+        }
+        /* ===== 新增结束 ===== */
+
         .hero {
             text-align: center;
             padding: 1.2rem 0 2.2rem;
@@ -803,7 +827,7 @@
                 <a href="#download"><i class="fas fa-download"></i> 下载</a>
                 <!-- APK 下载按钮 -->
                 <a href="#download" class="btn-download"><i class="fas fa-arrow-down"></i> APK下载</a>
-                <!-- ===== 新增：小黄书社区按钮（点击跳转 w.lianyu.best） ===== -->
+                <!-- ===== 新增：小黄书社区按钮 ===== -->
                 <a href="https://w.lianyu.best" class="btn-community" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> 小黄书社区</a>
                 <!-- ===== 新增结束 ===== -->
             </div>
@@ -964,11 +988,16 @@
             <div class="stat-item"><div class="num"><i class="fas fa-puzzle-piece"></i></div><div class="label">模块化架构</div></div>
         </div>
 
-        <!-- 下载区：123pan 地址 -->
+        <!-- 下载区：123pan 地址 + 新增网页版入口 -->
         <div class="download-area fade-up" id="download">
             <h3 style="font-size:2rem; color:#0a2a6a;"><i class="fas fa-rocket"></i> 立即体验</h3>
             <p style="color:#4a6a8a; max-width:500px; margin:0.4rem auto;">下载最新版 APK，开启你的随机美图之旅</p>
             <a href="https://1819739529.share.123pan.cn/123pan/NwGEjv-ipMed" class="big-btn" target="_blank"><i class="fas fa-cloud-download-alt"></i> 下载 APK (最新版)</a>
+
+            <!-- ===== 新增：网页版入口 ===== -->
+            <a href="index1.html" class="btn-web" target="_blank"><i class="fas fa-globe"></i> 网页版（免安装）</a>
+            <!-- ===== 新增结束 ===== -->
+
             <div class="meta">
                 <i class="fas fa-shield-alt"></i> 开源免费 · 无广告 · 权限透明
             </div>
