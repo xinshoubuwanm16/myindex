@@ -927,7 +927,9 @@ function showSettings() {
         { label: '🏠 访问官网', action: 'website' },
         { label: '💬 QQ群', action: 'qq' },
         { label: '🎮 加入KOOK(QQ群封了就加)', action: 'kook' },
+        { label: '📖 小黄书社区', action: 'xhs' },   // ← 新增这一行
     ];
+    
     let html = '<h3>⚙️ 设置</h3>';
     items.forEach(item => {
         html += `<div class="modal-item" data-action="${item.action}">${item.label}</div>`;
@@ -936,18 +938,19 @@ function showSettings() {
     modalContent.innerHTML = html;
     modalOverlay.classList.add('active');
 
-    modalContent.querySelectorAll('.modal-item').forEach(el => {
-        el.addEventListener('click', function() {
-            const action = this.dataset.action;
-            closeModal();
-            switch (action) {
-                case 'upload': window.open('http://sc.lianyu.best/', '_blank'); break;
-                case 'website': window.open('http://lianyu.best/', '_blank'); break;
-                case 'qq': window.open('https://qm.qq.com/q/qF1OqmXVjW', '_blank'); break;
-                case 'kook': window.open('https://kook.vip/B2RczW', '_blank'); break;
-            }
-        });
+modalContent.querySelectorAll('.modal-item').forEach(el => {
+    el.addEventListener('click', function() {
+        const action = this.dataset.action;
+        closeModal();
+        switch (action) {
+            case 'upload': window.open('http://sc.lianyu.best/', '_blank'); break;
+            case 'website': window.open('http://lianyu.best/', '_blank'); break;
+            case 'qq': window.open('https://qm.qq.com/q/qF1OqmXVjW', '_blank'); break;
+            case 'kook': window.open('https://kook.vip/B2RczW', '_blank'); break;
+            case 'xhs': window.open('https://w.lianyu.best', '_blank'); break;  
+        }
     });
+});
     document.getElementById('modalCloseSettings').addEventListener('click', closeModal);
     modalClose.onclick = closeModal;
     modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
