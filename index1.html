@@ -794,20 +794,30 @@ function switchSource(index) {
 //  9-13. 对话框、设置、事件绑定、启动
 // ============================================================
 function showSourceDialog() {
+    // 构建图源列表（不包含“添加新图源”）
     const items = [];
     apiList.forEach((s, i) => {
         let label = s.name || '未命名';
         if (i >= BUILTIN_SOURCES.length) label += ' [自定义]';
         items.push({ label, index: i });
     });
-    items.push({ label: '➕ 添加新图源', index: -1 });
 
     let html = '<h3>选择图源</h3>';
+
+    // ===== 1. 最先显示“随机帖子” =====
+    html += `<div class="modal-item" data-action="randompost">📝 随机美图帖子</div>`;
+
+    // ===== 2. 遍历所有图源 =====
     items.forEach(item => {
         const cls = (item.index === currentSourceIndex) ? 'modal-item active' : 'modal-item';
         const mark = (item.index === currentSourceIndex) ? ' ✅' : '';
         html += `<div class="${cls}" data-index="${item.index}">${item.label}${mark}</div>`;
     });
+
+    // ===== 3. 最后添加“添加新图源” =====
+    html += `<div class="modal-item" data-index="-1">➕ 添加新图源</div>`;
+
+    // ===== 4. 管理按钮和取消按钮 =====
     html += `
         <div style="margin-top:12px;display:flex;gap:10px;">
             <button class="btn btn-confirm" id="modalManageCustom" style="flex:1;">⚙️ 管理自定义源</button>
@@ -820,16 +830,36 @@ function showSourceDialog() {
 
     modalContent.querySelectorAll('.modal-item').forEach(el => {
         el.addEventListener('click', function() {
+            const action = this.dataset.action;
+            // 处理“随机帖子”
+            if (action === 'randompost') {
+                closeModal();
+                window.open('https://w.lianyu.best/random.php', '_blank');
+                return;
+            }
             const idx = parseInt(this.dataset.index);
-            if (idx === -1) { closeModal(); showAddSourceDialog(); }
-            else { closeModal(); switchSource(idx); }
+            if (isNaN(idx)) return;
+            if (idx === -1) {
+                closeModal();
+                showAddSourceDialog();
+            } else {
+                closeModal();
+                switchSource(idx);
+            }
         });
     });
-    document.getElementById('modalManageCustom').addEventListener('click', function() { closeModal(); showManageCustomDialog(); });
+
+    document.getElementById('modalManageCustom').addEventListener('click', function() {
+        closeModal();
+        showManageCustomDialog();
+    });
     document.getElementById('modalCloseSource').addEventListener('click', closeModal);
     modalClose.onclick = closeModal;
-    modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) closeModal();
+    });
 }
+
 
 function showAddSourceDialog() {
     let html = `
