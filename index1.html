@@ -927,8 +927,9 @@ function showSettings() {
         { label: '🏠 访问官网', action: 'website' },
         { label: '💬 QQ群', action: 'qq' },
         { label: '🎮 加入KOOK(QQ群封了就加)', action: 'kook' },
-        { label: '📖 小黄书社区', action: 'xhs' },
-        { label: '💬 聊天室', action: 'chatroom' },   // ← 新增这一行
+        { label: '✈️ Telegram 群', action: 'telegram' },   // ← 新增：在 KOOK 下面
+        { label: '📕 小黄书社区', action: 'xhs' },
+        { label: '💬 聊天室', action: 'chatroom' },
     ];
     
     let html = '<h3>⚙️ 设置</h3>';
@@ -948,8 +949,9 @@ function showSettings() {
                 case 'website': window.open('http://lianyu.best/', '_blank'); break;
                 case 'qq': window.open('https://qm.qq.com/q/qF1OqmXVjW', '_blank'); break;
                 case 'kook': window.open('https://kook.vip/B2RczW', '_blank'); break;
+                case 'telegram': window.open('https://t.me/GY6YYDS', '_blank'); break;   // ← 新增跳转
                 case 'xhs': window.open('https://w.lianyu.best', '_blank'); break;
-                case 'chatroom': window.open('https://qq.lianyu.best/', '_blank'); break;   
+                case 'chatroom': window.open('http://qq.lianyu.best/', '_blank'); break;
             }
         });
     });
@@ -957,6 +959,7 @@ function showSettings() {
     modalClose.onclick = closeModal;
     modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
 }
+
 
 function bindEvents() {
     document.getElementById('btnPrev').addEventListener('click', showPrev);
