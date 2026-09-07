@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Nav</title>
+<style>
+  :root{
+    --bg1:#0f172a; --bg2:#1e293b;
+    --accent:#58a6ff; --glow:rgba(88,166,255,.35);
+    --card:rgba(255,255,255,.08);
+    --border:rgba(255,255,255,.18);
+    --text:#e2e8f0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(60% 50% at 20% 30%, rgba(88,166,255,.25), transparent 70%),
+      radial-gradient(50% 60% at 80% 70%, rgba(168,85,247,.22), transparent 70%),
+      linear-gradient(135deg, var(--bg1), var(--bg2));
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:40px 20px;
+  }
+  h1{
+    font-weight:700; letter-spacing:.5px; margin-bottom:6px;
+    font-size:clamp(22px,4vw,34px);
+  }
+  p.sub{opacity:.6; margin-bottom:36px; font-size:14px}
+
+  .grid{
+    display:grid; gap:22px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    width:min(760px,100%);
+  }
+  .card{
+    display:block; text-decoration:none; color:inherit;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:26px 22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    transition:transform .3s ease, box-shadow .3s ease, background .3s ease;
+  }
+  .card:hover{
+    transform:translateY(-6px);
+    background:rgba(255,255,255,.12);
+    box-shadow:0 16px 40px var(--glow);
+  }
+  .card .ico{font-size:26px; margin-bottom:14px}
+  .card h3{font-size:17px; margin-bottom:6px}
+  .card span.url{font-size:12px; opacity:.55; word-break:break-all}
+</style>
+</head>
+<body>
+  <h1>小黄书网站导航</h1>
+  <p class="sub">点击卡片跳转</p>
+
+  <div class="grid">
+    <!-- 1. 已指向 lianyu -->
+    <a class="card" href="https://ww.lianyu.best" target="_blank" rel="noopener">
+      <div class="ico">🌐</div>
+      <h3>小黄书网站链接1</h3>
+      <span class="url">ww.lianyu.best</span>
+    </a>
+
+    <!-- 2. 占位，改这里 -->
+    <a class="card" href="https://xhs.lianyu.best" target="_blank" rel="noopener">
+      <div class="ico">🔗</div>
+      <h3>小黄书网站链接2</h3>
+      <span class="url">xhs.lianyu.best</span>
+    </a>
+
+    <!-- 3. 占位，改这里 -->
+    <a class="card" href="lianyu.zh.kg" target="_blank" rel="noopener">
+      <div class="ico">⭐</div>
+      <h3>小黄书网站链接3</h3>
+      <span class="url">lianyu.zh.kg</span>
+    </a>
+  </div>
+</body>
+</html>
